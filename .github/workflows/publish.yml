@@ -16,7 +16,7 @@ jobs:
       - name: Run tests
         run: mvn test
       - name: Capture pom version
-        run: echo ::set-ouput name=version::$(mvn -q help:evaluate -Dexpression=project.version -DforceStdout)
+        run: echo ::set-output name=version::$(mvn -q help:evaluate -Dexpression=project.version -DforceStdout)
         id: project
       - name: Get timestamp
         run: echo ::set-output name=value::$(date +'%Y%m%d.%H%M%S')
