@@ -17,13 +17,13 @@ jobs:
         run: mvn test
       - name: Capture pom version
         run: echo ::set-ouput name=version::$(mvn -q help:evaluate -Dexpression=project.version -DforceStdout)
-        id: version
+        id: project
       - name: Get timestamp
         run: echo ::set-output name=value::$(date +'%Y%m%d.%H%M%S')
         id: timestamp
       - name: Generate Docker image
-        run: mvn spring-boot:build-image -DskipTests -Dspring-boot.build-image.imageName=${{ secrets.DOCKERHUB_USERNAME }}/items:${{steps.version.outputs.version}}-${{steps.timestamp.outputs.value}}
+        run: mvn spring-boot:build-image -DskipTests -Dspring-boot.build-image.imageName=${{ secrets.DOCKERHUB_USERNAME }}/items:${{steps.project.outputs.version}}-${{steps.timestamp.outputs.value}}
       - name: Login to DockerHub
-        run: docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" -p "${{ secrets.DOCKERHUB_TOKEN }}" ¡
+        run: docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" -p "${{ secrets.DOCKERHUB_TOKEN 
       - name: Push image to DockerHub
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/items:v1
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/items:${{steps.version.outputs.version}}-${{steps.timestamp.outputs.value}}
